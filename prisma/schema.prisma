@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  Admin
+  Teacher
+  Student
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  role Role
+  firstName String  
+  lastName String
+  middleName String?
+  age Int?
+  gender String
+  address String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  admin Admin?
+  teacher Teacher?
+  student Student?
+}
+
+model Admin {
+  id Int @id
+  user User @relation(fields: [id], references: [id])
+  email String @unique
+  employeeId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Teacher {
+  id Int @id
+  user User @relation(fields: [id], references: [id])
+  email String @unique
+  bio String?
+  profileUrl String?
+  employeeId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  students Student[]
+}
+
+model Student {
+  id Int @id
+  user User @relation(fields: [id], references: [id])
+  studentId String @unique
+  bio String?
+  avatar String?
+  teacherId Int?
+  points Int @default(0)
+  teacher Teacher? @relation(fields: [teacherId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentVideos StudentVideo[]
+  studentLessons StudentLesson[]
+}
+
+model StudentVideo {
+  id Int @id @default(autoincrement())
+  studentId Int
+  student Student @relation(fields: [studentId], references: [id])
+  videoId Int
+  video Video @relation(fields: [videoId], references: [id])
+  isCompleted Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Video {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  linkUrl String
+  isOpen Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentVideos StudentVideo[]
+}
+
+model StudentLesson {
+  id Int @id @default(autoincrement())
+  studentId Int
+  student Student @relation(fields: [studentId], references: [id])
+  lessonId Int
+  lesson Lesson @relation(fields: [lessonId], references: [id])
+  isCompleted Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  moduleNo Int
+  content String
+  isOpen Boolean @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentLessons StudentLesson[]
+}
