@@ -30,6 +30,11 @@ export class UsersService {
       where: {
         id,
       },
+      include: {
+        teacher: true,
+        student: true,
+        admin: true,
+      },
     });
   }
 

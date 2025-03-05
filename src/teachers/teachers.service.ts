@@ -27,7 +27,11 @@ export class TeachersService {
       where: { id },
       include: {
         user: true,
-        students: true,
+        students: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   }

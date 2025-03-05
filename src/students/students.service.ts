@@ -36,6 +36,7 @@ export class StudentsService {
             user: true,
           },
         },
+        results: true,
       },
     });
   }

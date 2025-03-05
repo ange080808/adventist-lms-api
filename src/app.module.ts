@@ -10,6 +10,8 @@ import { VideosModule } from './videos/videos.module';
 import { LessonsModule } from './lessons/lessons.module';
 import { StudentVideosModule } from './student-videos/student-videos.module';
 import { StudentLessonsModule } from './student-lessons/student-lessons.module';
+import { ActivitiesModule } from './activities/activities.module';
+import { ResultsModule } from './results/results.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { StudentLessonsModule } from './student-lessons/student-lessons.module';
     LessonsModule,
     StudentVideosModule,
     StudentLessonsModule,
+    ActivitiesModule,
+    ResultsModule,
   ],
   controllers: [],
   providers: [],

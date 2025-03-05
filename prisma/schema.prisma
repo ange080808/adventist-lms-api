@@ -40,7 +40,7 @@ model User {
 
 model Admin {
   id Int @id
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
   email String @unique
   employeeId String @unique
   createdAt DateTime @default(now())
@@ -49,7 +49,7 @@ model Admin {
 
 model Teacher {
   id Int @id
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
   email String @unique
   bio String?
   profileUrl String?
@@ -62,18 +62,19 @@ model Teacher {
 
 model Student {
   id Int @id
-  user User @relation(fields: [id], references: [id])
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
   studentId String @unique
   bio String?
   avatar String?
   teacherId Int?
   points Int @default(0)
-  teacher Teacher? @relation(fields: [teacherId], references: [id])
+  teacher Teacher? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   studentVideos StudentVideo[]
   studentLessons StudentLesson[]
+  results Result[]
 }
 
 model StudentVideo {
@@ -91,7 +92,7 @@ model Video {
   id Int @id @default(autoincrement())
   title String
   description String?
-  linkUrl String
+  linkUrl String @unique
   isOpen Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -115,10 +116,33 @@ model Lesson {
   title String
   description String?
   moduleNo Int
-  content String
+  content String @unique
   isOpen Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   studentLessons StudentLesson[]
 }
+
+model Activity {
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  isOpen Boolean @default(false)
+  content String @unique
+  totalPoints Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  results Result[]
+}
+
+model Result {
+  id Int @id @default(autoincrement())
+  studentId Int
+  student Student @relation(fields: [studentId], references: [id])
+  activityId Int
+  activity Activity @relation(fields: [activityId], references: [id])
+  score Int
+}
+

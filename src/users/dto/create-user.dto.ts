@@ -1,6 +1,7 @@
 import { Role } from '@prisma/client';
 import {
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -33,7 +34,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   middleName: string;
 
-  @IsString()
+  @IsInt()
   @IsOptional()
   age: number;
 
