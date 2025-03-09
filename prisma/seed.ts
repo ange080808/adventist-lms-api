@@ -53,6 +53,7 @@ async function main() {
         content: 'Lesson3',
       },
     ],
+    skipDuplicates: true,
   });
 
   const act = await prisma.activity.createMany({
@@ -76,6 +77,7 @@ async function main() {
         totalPoints: 10,
       },
     ],
+    skipDuplicates: true,
   });
 
   console.log('DATA IMPORTED SUCCESSFULLY');
